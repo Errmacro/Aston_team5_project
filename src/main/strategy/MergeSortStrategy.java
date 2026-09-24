@@ -54,11 +54,4 @@ public class MergeSortStrategy<T> implements SortStrategy<T> {
         }
         return result;
     }
-
-    // Метод-заготовка для дальнейшей поддержки сортировки массивов T[].
-    @Override
-    public void sort(T[] array, Comparator<T> comparator) {
-
-    }
-
 }

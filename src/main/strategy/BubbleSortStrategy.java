@@ -24,11 +24,4 @@ public class BubbleSortStrategy<T> implements SortStrategy<T> {
             }
         }
     }
-
-    // Метод-заготовка для дальнейшей поддержки сортировки массивов T[].
-    @Override
-    public void sort(T[] array, Comparator<T> comparator) {
-
-    }
-
 }
