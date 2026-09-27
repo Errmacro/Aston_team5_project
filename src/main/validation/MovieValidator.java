@@ -1,76 +1,111 @@
 package main.validation;
 
 import java.time.Year;
+import java.util.regex.Pattern;
 
 /**
- * Набор статических правил валидации для полей {@link main.model.Movie}.
+ * Набор статических правил валидации для полей {@link com.sortingapp.model.Movie}.
+ * <p>
  * Используется как при построении объекта через Builder, так и при разборе
  * "сырых" строковых значений (ручной ввод, чтение из файла).
  */
 public final class MovieValidator {
 
-    private static final int MAX_TEXT_LENGTH = 100;
-
     private static final int MIN_YEAR = 1888; // год выхода первого известного фильма
-    private static final int MAX_YEAR = Year.now().getValue() + 1; // допускаем уже анонсированные фильмы
+    private static final int MAX_YEAR = Year.now().getValue() + 1;
 
     private static final int MIN_DURATION = 1;     // минимальная продолжительность фильма, минут
-    private static final int MAX_DURATION = 1200;  // максимальная продолжительность фильма, минут
+    private static final int MAX_DURATION = 1200;   // максимальная продолжительность фильма, минут
+
+    private static final Pattern TEXT_PATTERN =
+            Pattern.compile("^[A-Za-zА-Яа-яЁё0-9][A-Za-zА-Яа-яЁё0-9\\s\\-:.,!?'\"]{0,99}$");
 
     private MovieValidator() {
     }
 
+    /**
+     * Проверяет название фильма: не пусто, не длиннее 100 символов,
+     * содержит только допустимые символы.
+     */
     public static void validateTitle(String title) throws ValidationException {
         validateText(title, "Название фильма");
     }
 
+    /**
+     * Проверяет жанр фильма по тем же правилам, что и название.
+     */
     public static void validateGenre(String genre) throws ValidationException {
         validateText(genre, "Жанр");
     }
 
+    /**
+     * Проверяет год выпуска: должен входить в диапазон [1888; текущий год + 1].
+     */
     public static void validateReleaseYear(int releaseYear) throws ValidationException {
-        validateRange(releaseYear, MIN_YEAR, MAX_YEAR, "Год выпуска");
+        if (releaseYear < MIN_YEAR || releaseYear > MAX_YEAR) {
+            throw new ValidationException(
+                    "Год выпуска должен быть в диапазоне от " + MIN_YEAR + " до " + MAX_YEAR
+                            + ", получено: " + releaseYear);
+        }
     }
 
+    /**
+     * Проверяет продолжительность фильма: должна входить в диапазон
+     * [{@value #MIN_DURATION}; {@value #MAX_DURATION}] минут.
+     */
     public static void validateDuration(int duration) throws ValidationException {
-        validateRange(duration, MIN_DURATION, MAX_DURATION, "Продолжительность (мин)");
+        if (duration < MIN_DURATION || duration > MAX_DURATION) {
+            throw new ValidationException(
+                    "Продолжительность фильма должна быть в диапазоне от " + MIN_DURATION + " до " + MAX_DURATION
+                            + " минут, получено: " + duration);
+        }
     }
 
-    /** Разбирает "сырую" строку с годом, проверяет его и возвращает. */
-    public static int validateReleaseYear(String rawValue) throws ValidationException {
-        int releaseYear = parseInt(rawValue, "Год выпуска");
-        validateReleaseYear(releaseYear);
-        return releaseYear;
-    }
-
-    /** Разбирает "сырую" строку с продолжительностью, проверяет её и возвращает. */
+    /**
+     * Разбирает "сырую" строку с продолжительностью и проверяет её.
+     *
+     * @throws ValidationException если строка не является числом или продолжительность вне диапазона
+     */
     public static int validateDuration(String rawValue) throws ValidationException {
-        int duration = parseInt(rawValue, "Продолжительность");
+        if (rawValue == null || rawValue.trim().isEmpty()) {
+            throw new ValidationException("Продолжительность фильма не может быть пустой");
+        }
+        int duration;
+        try {
+            duration = Integer.parseInt(rawValue.trim());
+        } catch (NumberFormatException e) {
+            throw new ValidationException("Продолжительность должна быть целым числом, получено: '" + rawValue + "'");
+        }
         validateDuration(duration);
         return duration;
     }
 
+    /**
+     * Разбирает "сырую" строку с годом и проверяет её.
+     *
+     * @throws ValidationException если строка не является числом или год вне диапазона
+     */
+    public static int validateReleaseYear(String rawValue) throws ValidationException {
+        if (rawValue == null || rawValue.trim().isEmpty()) {
+            throw new ValidationException("Год выпуска не может быть пустым");
+        }
+        int year;
+        try {
+            year = Integer.parseInt(rawValue.trim());
+        } catch (NumberFormatException e) {
+            throw new ValidationException("Год выпуска должен быть целым числом, получено: '" + rawValue + "'");
+        }
+        validateReleaseYear(year);
+        return year;
+    }
+
     private static void validateText(String value, String fieldName) throws ValidationException {
-        if (value == null || value.isBlank()) {
+        if (value == null || value.trim().isEmpty()) {
             throw new ValidationException(fieldName + " не может быть пустым");
         }
-        if (value.trim().length() > MAX_TEXT_LENGTH) {
-            throw new ValidationException(fieldName + ": не больше " + MAX_TEXT_LENGTH + " символов");
-        }
-    }
-
-    private static void validateRange(int value, int min, int max, String fieldName) throws ValidationException {
-        if (value < min || value > max) {
-            throw new ValidationException(
-                    fieldName + ": допустимо от " + min + " до " + max + ", получено: " + value);
-        }
-    }
-
-    private static int parseInt(String rawValue, String fieldName) throws ValidationException {
-        try {
-            return Integer.parseInt(rawValue.trim());
-        } catch (NumberFormatException e) {
-            throw new ValidationException(fieldName + " должен быть целым числом, получено: '" + rawValue + "'");
+        String trimmed = value.trim();
+        if (!TEXT_PATTERN.matcher(trimmed).matches()) {
+            throw new ValidationException(fieldName + " содержит недопустимые символы или длину: '" + trimmed + "'");
         }
     }
 }
