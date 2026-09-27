@@ -1,4 +1,4 @@
-package com.sortingapp.validation;
+package main.validation;
 
 /**
  * Сигнализирует о том, что введённые пользователем (или прочитанные из файла)

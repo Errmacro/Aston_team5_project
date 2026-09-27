@@ -1,4 +1,4 @@
-package com.sortingapp.model;
+package main.model;
 
 import java.util.Objects;
 
@@ -78,7 +78,7 @@ public final class Movie {
 
     /**
      * Builder для {@link Movie}. Валидацию значений выполняет
-     * {@link com.sortingapp.validation.MovieValidator} на этапе {@link #build()},
+     * {@link main.validation.MovieValidator} на этапе {@link #build()},
      * поэтому построить некорректный объект невозможно.
      */
     public static final class Builder {
@@ -114,14 +114,14 @@ public final class Movie {
         /**
          * Проверяет накопленные значения и создаёт объект {@link Movie}.
          *
-         * @throws com.sortingapp.validation.ValidationException если хотя бы одно
+         * @throws main.validation.ValidationException если хотя бы одно
          *                                                        поле не прошло валидацию
          */
-        public Movie build() throws com.sortingapp.validation.ValidationException {
-            com.sortingapp.validation.MovieValidator.validateTitle(title);
-            com.sortingapp.validation.MovieValidator.validateReleaseYear(releaseYear);
-            com.sortingapp.validation.MovieValidator.validateGenre(genre);
-            com.sortingapp.validation.MovieValidator.validateDuration(duration);
+        public Movie build() throws main.validation.ValidationException {
+            main.validation.MovieValidator.validateTitle(title);
+            main.validation.MovieValidator.validateReleaseYear(releaseYear);
+            main.validation.MovieValidator.validateGenre(genre);
+            main.validation.MovieValidator.validateDuration(duration);
             return new Movie(this);
         }
     }
