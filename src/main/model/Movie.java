@@ -88,7 +88,7 @@ public final class Movie {
         private String genre;
         private int duration;
 
-        private Builder() {
+        public Builder() {
         }
 
         public Builder title(String title) {

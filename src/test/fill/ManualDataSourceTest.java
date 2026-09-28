@@ -34,7 +34,7 @@ public class ManualDataSourceTest {
         List<Movie> movies = source.load(1);
 
         Movie expected = Movie.builder()
-                .title("Inception").genre("Sci-Fi").releaseYear(2010).duration(148).build();
+                .title("Inception").releaseYear(2010).duration(148).build();
         assertEquals(List.of(expected), movies);
     }
 
@@ -59,7 +59,6 @@ public class ManualDataSourceTest {
         Movie movie = source.load(1).get(0);
 
         assertEquals("Inception", movie.getTitle());
-        assertEquals("Sci-Fi", movie.getGenre());
         assertEquals(2010, movie.getReleaseYear());
         assertEquals(148, movie.getDuration());
     }

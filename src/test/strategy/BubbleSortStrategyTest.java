@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BubbleSortStrategyTest {
 
-    // Проверка обычной сортировки случайного списка чисел
+    // Проверка обычной сортировки списка чисел
     @Test
     void shouldSortIntegers() {
         List<Integer> numbers = new ArrayList<>(List.of(5, 2, 8, 1, 3));

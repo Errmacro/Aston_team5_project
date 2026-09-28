@@ -1,4 +1,3 @@
-package com.example.sorting.strategy;
 package main.strategy;
 
 import java.util.ArrayList;
@@ -7,12 +6,9 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * Интерфейс стратегии сортировки.
+ * Интерфейс стратегии сортировки
  * Принимает только список и компаратор.
  */
-public interface SortStrategy<T> {
-    void sort(List<T> items, Comparator<T> comparator);
-}
 public interface SortStrategy<T> {
     void sort(List<T> items, Comparator<T> comparator);
 
