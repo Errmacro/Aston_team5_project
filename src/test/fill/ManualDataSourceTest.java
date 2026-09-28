@@ -38,6 +38,7 @@ public class ManualDataSourceTest {
         assertEquals(List.of(expected), movies);
     }
 
+
     @Test
     void shouldLoadSeveralMovies() {
         ManualDataSource source = sourceWithInput(
