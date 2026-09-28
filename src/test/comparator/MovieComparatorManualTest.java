@@ -1,4 +1,4 @@
-package сomparator;
+package comparator;
 
 import main.comparator.MovieDurationComparator;
 import main.comparator.MovieTitleComparator;
