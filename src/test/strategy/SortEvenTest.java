@@ -14,10 +14,10 @@ public class SortEvenTest {
     @Test
     void shouldSortOnlyEvenValues() {
         SortStrategy<Integer> sorter = new QuickSortStrategy<>();
-        List<Integer> list = new ArrayList<>(List.of(1, 4, 3, 2, 5, 6, 7, 8));
+        List<Integer> list = new ArrayList<>(List.of(1, 4, 3, 6, 8, 5, 7, 2));
 
         sorter.sortEven(list, Comparator.naturalOrder(), i -> i);
 
-        assertEquals(List.of(1, 2, 3, 4, 5, 6, 7, 8), list);
+        assertEquals(List.of(1, 2, 3, 4, 6, 5, 7, 8), list);
     }
 }
