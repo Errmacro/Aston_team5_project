@@ -32,8 +32,8 @@ public class MovieComparatorManualTest {
     }
 
     private static void testTitleComparator() throws ValidationException {
-        Movie avatar = new Movie.Builder().title("Avatar").releaseYear(2009).genre("Fantasy").duration(162).build();
-        Movie batman = new Movie.Builder().title("Batman").releaseYear(2022).genre("Action").duration(176).build();
+        Movie avatar = Movie.builder().title("Avatar").releaseYear(2009).genre("Fantasy").duration(162).build();
+        Movie batman = Movie.builder().title("Batman").releaseYear(2022).genre("Action").duration(176).build();
 
         MovieTitleComparator comparator = new MovieTitleComparator();
 
@@ -43,8 +43,8 @@ public class MovieComparatorManualTest {
     }
 
     private static void testYearComparator() throws ValidationException {
-        Movie old = new Movie.Builder().title("Old").releaseYear(1990).genre("Dramedy").duration(120).build();
-        Movie recent = new Movie.Builder().title("Recent").releaseYear(2020).genre("Comedy").duration(130).build();
+        Movie old = Movie.builder().title("Old").releaseYear(1990).genre("Dramedy").duration(120).build();
+        Movie recent = Movie.builder().title("Recent").releaseYear(2020).genre("Comedy").duration(130).build();
 
         MovieReleaseYearComparator comparator = new MovieReleaseYearComparator();
 
@@ -53,8 +53,8 @@ public class MovieComparatorManualTest {
     }
 
     private static void testDurationComparator() throws ValidationException {
-        Movie shortMovie = new Movie.Builder().title("Short").releaseYear(2020).genre("Dramedy").duration(90).build();
-        Movie longMovie = new Movie.Builder().title("Long").releaseYear(2020).genre("Dramedy").duration(180).build();
+        Movie shortMovie = Movie.builder().title("Short").releaseYear(2020).genre("Dramedy").duration(90).build();
+        Movie longMovie = Movie.builder().title("Long").releaseYear(2020).genre("Dramedy").duration(180).build();
 
         MovieDurationComparator comparator = new MovieDurationComparator();
 
@@ -63,8 +63,8 @@ public class MovieComparatorManualTest {
     }
 
     private static void testReverseComparator() throws ValidationException {
-        Movie m1 = new Movie.Builder().title("A").releaseYear(2000).genre("Comedy").duration(100).build();
-        Movie m2 = new Movie.Builder().title("B").releaseYear(2010).genre("Comedy").duration(120).build();
+        Movie m1 = Movie.builder().title("A").releaseYear(2000).genre("Comedy").duration(100).build();
+        Movie m2 = Movie.builder().title("B").releaseYear(2010).genre("Comedy").duration(120).build();
 
         ReverseComparator<Movie> reverse = new ReverseComparator<>(new MovieReleaseYearComparator());
         check(reverse.compare(m1, m2) > 0, "Reverse: меняет порядок на обратный");
