@@ -4,6 +4,7 @@ import main.comparator.MovieDurationComparator;
 import main.comparator.MovieGenreComparator;
 import main.comparator.MovieReleaseYearComparator;
 import main.comparator.MovieTitleComparator;
+import main.comparator.ReverseComparator;
 import main.fill.DataSource;
 import main.fill.FileDataSource;
 import main.fill.ManualDataSource;
@@ -133,7 +134,7 @@ public class Application {
     }
 
     // Запускает сортировку текущего списка фильмов.
-    // Пользователь выбирает алгоритм сортировки и поле,
+    // Пользователь выбирает алгоритм сортировки, направление и поле,
     // по которому необходимо выполнить сортировку.
     private void sortMovies(List<Movie> movies) {
         if (movies == null || movies.isEmpty()) {
@@ -141,12 +142,9 @@ public class Application {
             return;
         }
 
-        SortStrategy<Movie> strategy =
-                chooseSortStrategy();
-
-        Comparator<Movie> comparator =
-                chooseComparator();
-
+        SortStrategy<Movie> strategy = chooseSortStrategy();
+        Comparator<Movie> comparator = chooseComparator();
+        comparator = chooseSortDirection(comparator);
         strategy.sort(movies, comparator);
 
         out.println("Фильмы отсортированы.");
@@ -155,7 +153,6 @@ public class Application {
     // Предлагает пользователю выбрать алгоритм сортировки
     // и возвращает соответствующую стратегию.
     // @return выбранная стратегия сортировки
-
     private SortStrategy<Movie> chooseSortStrategy() {
         out.println();
         out.println("Выберите алгоритм сортировки:");
@@ -180,6 +177,24 @@ public class Application {
                 return new QuickSortStrategy<>();
         }
     }
+
+    // Выбираем направление сортировки: по возрастанию или по убыванию.
+    // Для обратного порядка используем ReverseComparator.
+    private Comparator<Movie> chooseSortDirection(Comparator<Movie> comparator) {
+        out.println();
+        out.println("Выберите направление сортировки:");
+        out.println("  1 — По возрастанию");
+        out.println("  2 — По убыванию");
+
+        int choice = input.readInt("Ваш выбор: ", 1, 2);
+
+        if (choice == 2) {
+            return new ReverseComparator<>(comparator);
+        }
+
+        return comparator;
+    }
+
 
     //Предлагает пользователю выбрать поле фильма,
     // по которому будет выполняться сортировка,
