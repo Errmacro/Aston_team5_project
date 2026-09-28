@@ -1,11 +1,13 @@
-package com.example.sorting.comparator;
+package main.comparator;
 
-import com.example.sorting.model.Movie;
+
+import main.model.Movie;
+
 import java.util.Comparator;
 
 public class MovieYearComparator implements Comparator<Movie> {
     @Override
     public int compare(Movie first, Movie second) {
-        return Integer.compare(first.getYear(), second.getYear());
+        return Integer.compare(first.getReleaseYear(), second.getReleaseYear());
     }
 }

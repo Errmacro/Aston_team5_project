@@ -76,6 +76,8 @@ public final class Movie {
                 + '}';
     }
 
+
+
     /**
      * Builder для {@link Movie}. Валидацию значений выполняет
      * {@link main.validation.MovieValidator} на этапе {@link #build()},
@@ -88,7 +90,7 @@ public final class Movie {
         private String genre;
         private int duration;
 
-        private Builder() {
+        public Builder() {
         }
 
         public Builder title(String title) {

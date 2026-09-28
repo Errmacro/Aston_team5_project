@@ -1,6 +1,8 @@
-package com.example.sorting.comparator;
+package main.comparator;
 
-import com.example.sorting.model.Movie;
+
+import main.model.Movie;
+
 import java.util.Comparator;
 
 public class MovieDurationComparator implements Comparator<Movie> {

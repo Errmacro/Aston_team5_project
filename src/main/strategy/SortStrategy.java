@@ -1,4 +1,3 @@
-package com.example.sorting.strategy;
 package main.strategy;
 
 import java.util.ArrayList;
@@ -12,10 +11,6 @@ import java.util.function.Function;
  */
 public interface SortStrategy<T> {
     void sort(List<T> items, Comparator<T> comparator);
-}
-public interface SortStrategy<T> {
-    void sort(List<T> items, Comparator<T> comparator);
-
     default void sortEven(List<T> items, Comparator<T> comparator, Function<T, Integer> fieldExtractor) {
         if (items == null || items.size() < 2) return;
         if (comparator == null || fieldExtractor == null) {
