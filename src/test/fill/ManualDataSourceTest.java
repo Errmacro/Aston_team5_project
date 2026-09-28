@@ -34,9 +34,10 @@ public class ManualDataSourceTest {
         List<Movie> movies = source.load(1);
 
         Movie expected = Movie.builder()
-                .title("Inception").releaseYear(2010).duration(148).build();
+                .title("Inception").releaseYear(2010).genre("Sci-Fi").duration(148).build();
         assertEquals(List.of(expected), movies);
     }
+
 
     @Test
     void shouldLoadSeveralMovies() {
