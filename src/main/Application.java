@@ -7,6 +7,7 @@ import main.comparator.MovieTitleComparator;
 import main.comparator.ReverseComparator;
 import main.fill.DataSource;
 import main.fill.FileDataSource;
+import main.fill.FileResultWriter;
 import main.fill.ManualDataSource;
 import main.fill.RandomDataSource;
 import main.model.Movie;
@@ -16,6 +17,7 @@ import main.strategy.QuickSortStrategy;
 import main.strategy.SortStrategy;
 
 import java.io.PrintStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,14 +29,18 @@ import java.util.Scanner;
 public class Application {
 
     private static final int MAX_SIZE = 100;
+    private static final String DEFAULT_RESULTS_FILE = "data/results.txt";
 
     private final InputReader input;
     private final PrintStream out;
+    private final FileResultWriter resultWriter;
 
     public Application(Scanner scanner, PrintStream out) {
         this.input = new InputReader(scanner, out);
         this.out = out;
+        this.resultWriter = new FileResultWriter(Paths.get(DEFAULT_RESULTS_FILE), out);
     }
+
     // Управляет основным сценарием работы приложения:
     // отображает меню, загружает фильмы, выводит их
     // и запускает сортировку.
@@ -47,7 +53,7 @@ public class Application {
             int choice = input.readInt(
                     "Ваш выбор: ",
                     0,
-                    3
+                    5
             );
 
             switch (choice) {
@@ -63,6 +69,14 @@ public class Application {
                     sortMovies(movies);
                     break;
 
+                case 4:
+                    saveMovies(movies);
+                    break;
+
+                case 5:
+                    sortAndSave(movies);
+                    break;
+
                 case 0:
                     out.println("Работа программы завершена.");
                     return;
@@ -76,6 +90,8 @@ public class Application {
         out.println("1 — Загрузить фильмы");
         out.println("2 — Показать фильмы");
         out.println("3 — Отсортировать фильмы");
+        out.println("4 — Сохранить фильмы в файл");
+        out.println("5 — Отсортировать и сохранить");
         out.println("0 — Выход");
         out.println("==========================");
     }
@@ -178,6 +194,25 @@ public class Application {
         }
     }
 
+    private void saveMovies(List<Movie> movies) {
+        if (movies == null || movies.isEmpty()) {
+            out.println("Сначала загрузите фильмы.");
+            return;
+        }
+
+        resultWriter.writeMovies(movies, "Фильмы");
+    }
+
+    private void sortAndSave(List<Movie> movies) {
+        if (movies == null || movies.isEmpty()) {
+            out.println("Сначала загрузите фильмы.");
+            return;
+        }
+
+        sortMovies(movies);
+        resultWriter.writeMovies(movies, "Отсортированные фильмы");
+    }
+
     // Выбираем направление сортировки: по возрастанию или по убыванию.
     // Для обратного порядка используем ReverseComparator.
     private Comparator<Movie> chooseSortDirection(Comparator<Movie> comparator) {
@@ -194,7 +229,6 @@ public class Application {
 
         return comparator;
     }
-
 
     //Предлагает пользователю выбрать поле фильма,
     // по которому будет выполняться сортировка,
